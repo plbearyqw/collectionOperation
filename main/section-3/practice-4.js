@@ -1,25 +1,19 @@
 'use strict';
 
 function find(collection, ch) {
-    for (let item of collection) {
-        if (item.key === ch) {
-            return item;
-        }
-    }
-
-    return null;
+    return collection.find(item => item.key === ch);
 }
 
 function summarize(collection) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(item => {
         let obj = find(result, item)
         if (obj) {
             obj.count++;
         } else {
             result.push({key: item, count: 1});
         }
-    }
+    });
     return result;
 }
 
@@ -36,37 +30,31 @@ function push(result, key, count) {
 
 function expand(collection) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(item => {
         if (item.length === 1) {
             result.push(item);
         } else {
             let {key, count} = split(item);
             push(result, key, count);
         }
-    }
+    });
     return result;
 }
 
 function includes(collection, ch) {
-    for (let item of collection) {
-        if (item === ch) {
-            return true;
-        }
-    }
-
-    return false;
+    return collection.indexOf(ch) > -1;
 }
 
 function discount(collection, promotionItems) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(item => {
         let key = item.key;
         let count = item.count;
         if (includes(promotionItems, key)) {
             count = count - Math.floor(count / 3);
         }
         result.push({key, count});
-    }
+    });
     return result;
 }
 
